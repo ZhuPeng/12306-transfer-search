@@ -414,4 +414,4 @@ or
 ```
 
 ## Author
-**12305-Schedule** © [Vincent Young](https://github.com/missuo), Released under the [MIT](./LICENSE) License.<br>
+**12306-Schedule** © [Vincent Young](https://github.com/missuo), Released under the [MIT](./LICENSE) License.<br>
