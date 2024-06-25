@@ -13,6 +13,7 @@ Copyright © 2023 by Vincent, All Rights Reserved.
 from flask import Flask, jsonify, request, abort
 import json
 import httpx
+import hashlib
 import datetime
 from flask_cors import CORS
 
@@ -46,6 +47,18 @@ def queryTrainInfo(trainNo, date):
     else:
         return None
 
+def mkdir_if_notexists(d):
+    if not os.path.exists(d):
+        os.makedirs(d)
+
+def cache_file(func):
+    def wraper(*args, **kws):
+        print('cache_file:', args[0])
+        r = func(*args, **kws)
+        return r
+    return wraper
+
+@cache_file
 def queryTrainSchedule(trainNo, fromStation, toStation, date):
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"
@@ -62,8 +75,6 @@ def queryTrainSchedule(trainNo, fromStation, toStation, date):
             return None
     else:
         return None
-
-
 
 @app.route('/')
 def hello():

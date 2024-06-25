@@ -29,6 +29,6 @@ for station in stations:
 	})
 
 with open('stations.json', 'w', encoding='utf-8') as f:
-	json.dump(parsed_stations, f, ensure_ascii=False)
+	json.dump(parsed_stations, f, ensure_ascii=False, indent=4)
 	
 print("Writing is complete!")
