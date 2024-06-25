@@ -113,6 +113,10 @@ def schedule():
         else:
             return jsonify(data = TrainSchedule)
 
+# downloads train list: https://github.com/FlyingRadish/12306-api
+def transfer_search():
+    pass
+
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
     app.run(host='0.0.0.0', port=5555)
