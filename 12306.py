@@ -230,6 +230,7 @@ def get_transfer_search():
             transfer_station = m['schedule'][transfer_idx]['station_name']
             trans_match = get_match_train(transfer_station)
             for tidx, tm in trans_match:
+                if m['station_train_code'] == tm['station_train_code']: continue
                 end_tidx = tidx + 1
                 while end_tidx < len(tm['schedule']):
                     end_station = tm['schedule'][end_tidx]['station_name']
