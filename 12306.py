@@ -200,7 +200,8 @@ def transfer_search():
     count = int(request.args.get('count', 1))
     transfer_time_min = int(request.args.get('transfer_time_min', 20))
     transfer_time_max = int(request.args.get('transfer_time_max', 120))
-    start_time_range = request.args.get('start_time_range', '21-24')
+    start_time_range = request.args.get('start_time_range', '20-24')
+    arrive_time_range = request.args.get('arrive_time_range', '5-12')
     match_train = get_full_match_train(start, end)
     res = {'args': request.args, '0-transfer': match_train}
     if count == 0:
@@ -216,7 +217,8 @@ def transfer_search():
             for tidx, tm in trans_match:
                 end_tidx = tidx + 1
                 while end_tidx < len(tm['schedule']):
-                    if end not in tm['schedule'][end_tidx]['station_name']:
+                    end_station = tm['schedule'][end_tidx]['station_name']
+                    if end not in end_station:
                         end_tidx += 1
                         continue
                     first_transfer = {
@@ -233,17 +235,13 @@ def transfer_search():
                         'start_station': tm['schedule'][tidx]['station_name'],
                         'start_time': tm['schedule'][tidx]['start_time'],
                         'end_idx': end_tidx,
-                        'end_station': tm['schedule'][end_tidx]['station_name'],
+                        'end_station': end_station,
                         'arrive_time': tm['schedule'][end_tidx]['arrive_time'],
                         'train_info': tm,
                     }
                     diff = time_diff_mins(first_transfer['arrive_time'], seccond_transfer['start_time'])
-                    if diff < transfer_time_min or diff > transfer_time_max: 
-                        print('transfer_time not match:', diff)
-                        end_tidx += 1
-                        continue
-                    if not is_time_in_range(first_transfer['start_time'], start_time_range):
-                        print('start_time_range not include:', start_time_range, first_transfer['start_time'])
+                    if diff < transfer_time_min or diff > transfer_time_max or not is_time_in_range(first_transfer['start_time'], start_time_range) or not is_time_in_range(seccond_transfer['arrive_time'], arrive_time_range): 
+                        print('[filter]:', '[first]-->', m, '[second]-->', tm)
                         end_tidx += 1
                         continue
                     transfer.append((first_transfer, seccond_transfer))
