@@ -106,18 +106,30 @@ function saveCheck() {
 
 {% if data and data['0-transfer'] %}
 <h3>直达</h3>
-<table>
+<table border="1" cellpadding="6" cellspacing="0" bordercolor="#000000" style="border-collapse: collapse;">
     <thead>
-        <tr>
-            <th>Index</th>
-            <th>Data</th>
+        <tr class="table_header">
+            <th>No.</th>
+            <th>车次</th>
+            <th>出发站</th>
+            <th>出发时间</th>
+            <th>到达站</th>
+            <th>到达时间</th>
         </tr>
     </thead>
     <tbody>
         {% for item in data['0-transfer'] %}
-        <tr>
+        {% if loop.index % 2 == 0 %}
+        <tr class="table-even-row">
+        {% else %}
+        <tr class="table-odd-row">
+        {% endif %}
             <td>{{ loop.index }}</td>
-            <td>{{ item }}</td>
+            <td>{{ item['station_train_code'] }}</td>
+            <td>{{ item['from_station'] }}</td>
+            <td>{{ item['schedule'][0]['start_time'] }}</td>
+            <td>{{ item['to_station'] }}</td>
+            <td>{{ item['schedule'][-1]['arrive_time'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
