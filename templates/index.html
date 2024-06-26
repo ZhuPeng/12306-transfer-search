@@ -103,6 +103,9 @@ function saveCheck() {
 <p>
 <font color="red"></font>
 
+{% if data and not data['0-transfer'] and not data['1-transfer'] %}
+<h3>未找到中转方案</h3>
+{% endif %}
 
 {% if data and data['0-transfer'] %}
 <h3>直达</h3>
