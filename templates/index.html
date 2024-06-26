@@ -127,12 +127,12 @@ function saveCheck() {
         {% else %}
         <tr class="table-odd-row">
         {% endif %}
-            <td>{{ loop.index }}</td>
-            <td>{{ item['station_train_code'] }}</td>
-            <td>{{ item['from_station'] }}</td>
-            <td>{{ item['schedule'][0]['start_time'] }}</td>
-            <td>{{ item['to_station'] }}</td>
-            <td>{{ item['schedule'][-1]['arrive_time'] }}</td>
+            <td align="center">{{ loop.index }}</td>
+            <td align="center">{{ item['station_train_code'] }}</td>
+            <td align="center">{{ item['from_station'] }}</td>
+            <td align="center">{{ item['schedule'][0]['start_time'] }}</td>
+            <td align="center">{{ item['to_station'] }}</td>
+            <td align="center">{{ item['schedule'][-1]['arrive_time'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -160,12 +160,12 @@ function saveCheck() {
         {% else %}
         <tr class="table-odd-row">
         {% endif %}
-            <td>{{ loop.index }}</td>
-            <td>{{ t['train_info']['station_train_code'] }}</td>
-            <td>{{ t['start_station'] }}</td>
-            <td>{{ t['start_time'] }}</td>
-            <td>{{ t['end_station'] }}</td>
-            <td>{{ t['arrive_time'] }}</td>
+            <td align="center">{{ loop.index }}</td>
+            <td align="center">{{ t['train_info']['station_train_code'] }}</td>
+            <td align="center">{{ t['start_station'] }}</td>
+            <td align="center">{{ t['start_time'] }}</td>
+            <td align="center">{{ t['end_station'] }}</td>
+            <td align="center">{{ t['arrive_time'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
