@@ -64,16 +64,16 @@ function saveCheck() {
 <table>
   <tbody><tr>
     <td>发站:</td>
-    <td><input id="start" name="start" type="text" value="北京"></td>
+    <td><input id="start" name="start" type="text" value="{% if data and data['args']['start'] %}{{ data['args']['start'] }}{% else %}北京{% endif %}"></td>
     <td>到站:</td>
-    <td><input id="end" name="end" type="text" value="威海"></td>
+    <td><input id="end" name="end" type="text" value="{% if data and data['args']['end'] %}{{ data['args']['end'] }}{% else %}威海{% endif %}"></td>
     <td><button class="buttonGo" onclick="return saveCheck();">搜索</button></td>
   </tr>
 </tbody></table>
 <table>
   <tbody><tr>
     <td>尝试换乘站数:</td>
-    <td><input id="transcount" name="transcount" style="width:60" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="1"></td>
+    <td><input id="transcount" name="transcount" style="width:60" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="{% if data and data['args']['transcount'] %}{{ data['args']['transcount'] }}{% else %}1{% endif %}"></td>
     <td>换乘类型:</td>
     <td>
     <select id="transType" name="transType">
@@ -84,16 +84,16 @@ function saveCheck() {
     </td>
     <tr>
     <td>出发时间区间(小时):</td>
-    <td><input id="start_time_range_min" name="start_time_range_min" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="20"> -</td>
-    <td><input id="start_time_range_max" name="start_time_range_max" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="24"></td>
+    <td><input id="start_time_range_min" name="start_time_range_min" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="{% if data and data['args']['start_time_range_min'] %}{{ data['args']['start_time_range_min'] }}{% else %}20{% endif %}"> -</td>
+    <td><input id="start_time_range_max" name="start_time_range_max" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="{% if data and data['args']['start_time_range_max'] %}{{ data['args']['start_time_range_max'] }}{% else %}24{% endif %}"></td>
     <td>到达时间区间(小时):</td>
-    <td><input id="arrive_time_range_min" name="arrive_time_range_min" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="5"> -</td>
-    <td><input id="arrive_time_range_max" name="arrive_time_range_max" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="12"></td>
+    <td><input id="arrive_time_range_min" name="arrive_time_range_min" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="{% if data and data['args']['arrive_time_range_min'] %}{{ data['args']['arrive_time_range_min'] }}{% else %}5{% endif %}"> -</td>
+    <td><input id="arrive_time_range_max" name="arrive_time_range_max" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="{% if data and data['args']['arrive_time_range_max'] %}{{ data['args']['arrive_time_range_max'] }}{% else %}12{% endif %}"></td>
     <tr>
     <td>换乘最小间隔(分钟):</td>
-    <td><input id="transfer_time_min" name="transfer_time_min" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="20"></td>
+    <td><input id="transfer_time_min" name="transfer_time_min" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="{% if data and data['args']['transfer_time_min'] %}{{ data['args']['transfer_time_min'] }}{% else %}20{% endif %}"></td>
     <td>换乘最大间隔(分钟)</td>
-    <td><input id="transfer_time_max" name="transfer_time_max" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="120"></td>
+    <td><input id="transfer_time_max" name="transfer_time_max" style="width:40" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="{% if data and data['args']['transfer_time_max'] %}{{ data['args']['transfer_time_max'] }}{% else %}120{% endif %}"></td>
     <tr>
     <td>显示结果数:</td>
     <td><input id="showCount" name="showCount" style="width:60" onkeyup="this.value=this.value.replace(/\D/g,'')" type="text" value="100"></td>
@@ -106,7 +106,7 @@ function saveCheck() {
 
 {% if data and data['0-transfer'] %}
 <h3>直达</h3>
-<table border="1" cellpadding="6" cellspacing="0" bordercolor="#000000" style="border-collapse: collapse;">
+<table width="50%" border="1" cellpadding="6" cellspacing="0" bordercolor="#000000" style="border-collapse: collapse;">
     <thead>
         <tr class="table_header">
             <th>No.</th>
@@ -139,7 +139,7 @@ function saveCheck() {
 {% if data and data['1-transfer'] %}
 <h3>1 次中转</h3>
 {% for item in data['1-transfer'] %}
-<table border="1" cellpadding="6" cellspacing="0" bordercolor="#000000" style="border-collapse: collapse;">
+<table width="50%" border="1" cellpadding="6" cellspacing="0" bordercolor="#000000" style="border-collapse: collapse;">
     <thead>
         <tr class="table_header">
             <th>No.</th>
@@ -166,8 +166,9 @@ function saveCheck() {
         </tr>
         {% endfor %}
     </tbody>
-{% endfor %}
 </table>
+<br>
+{% endfor %}
 {% endif %}
 </p>
 
