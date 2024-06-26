@@ -203,13 +203,20 @@ def transfer_search():
     return jsonify(get_transfer_search())
 
 def get_transfer_search():
+    print('request args:', '\n'.join(("%s->%s" % (k, v) for k, v in request.args.items())))
     start = request.args.get('start')
     end = request.args.get('end')
     count = int(request.args.get('transcount', 1))
     transfer_time_min = int(request.args.get('transfer_time_min', 20))
     transfer_time_max = int(request.args.get('transfer_time_max', 120))
-    start_time_range = request.args.get('start_time_range', '20-24')
-    arrive_time_range = request.args.get('arrive_time_range', '5-12')
+    if 'start_time_range_min' in request.args:
+        start_time_range = request.args.get('start_time_range_min') + '-' + request.args.get('start_time_range_max')
+    else:
+        start_time_range = request.args.get('start_time_range', '20-24')
+    if 'arrive_time_range_min' in request.args:
+        arrive_time_range = request.args.get('arrive_time_range_min') + '-' + request.args.get('arrive_time_range_max')
+    else:
+        arrive_time_range = request.args.get('arrive_time_range', '5-12')
     match_train = get_full_match_train(start, end)
     res = {'args': request.args, '0-transfer': match_train}
     if count == 0:
@@ -248,8 +255,10 @@ def get_transfer_search():
                         'train_info': tm,
                     }
                     diff = time_diff_mins(first_transfer['arrive_time'], seccond_transfer['start_time'])
-                    if diff < transfer_time_min or diff > transfer_time_max or not is_time_in_range(first_transfer['start_time'], start_time_range) or not is_time_in_range(seccond_transfer['arrive_time'], arrive_time_range): 
-                        print('[filter]:', '[first]-->', m, '[second]-->', tm)
+                    startinrange = is_time_in_range(first_transfer['start_time'], start_time_range)
+                    arriveinrange = is_time_in_range(seccond_transfer['arrive_time'], arrive_time_range)
+                    if diff < transfer_time_min or diff > transfer_time_max or not startinrange or not arriveinrange: 
+                        print('[filter]: transfer diff->', diff, 'startinrange->', startinrange, 'arriveinrange->', arriveinrange)
                         end_tidx += 1
                         continue
                     transfer.append((first_transfer, seccond_transfer))
