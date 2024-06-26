@@ -10,7 +10,7 @@ Copyright © 2023 by Vincent, All Rights Reserved.
 '''
 #!/usr/bin/env python3
 
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, render_template
 import json
 import os
 import httpx
@@ -107,9 +107,14 @@ train_list = [load_json_file('cache/'+f) for f in listdir('cache/', prefix='quer
 for t in train_list:
     t['schedule'] = queryTrainSchedule(t['train_no'], '', '', '')
 
-@app.route('/')
-def hello():
-    return jsonify({"message": "Hello!"})
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        request.args = request.form
+        data = get_transfer_search()
+        return render_template('index.html', data=data)
+    else:
+        return render_template('index.html')
 
 @app.route('/info')
 def info():
@@ -195,9 +200,12 @@ def is_time_in_range(t, trange):
 # downloads train list: https://github.com/FlyingRadish/12306-api
 @app.route('/search')
 def transfer_search():
+    return jsonify(get_transfer_search())
+
+def get_transfer_search():
     start = request.args.get('start')
     end = request.args.get('end')
-    count = int(request.args.get('count', 1))
+    count = int(request.args.get('transcount', 1))
     transfer_time_min = int(request.args.get('transfer_time_min', 20))
     transfer_time_max = int(request.args.get('transfer_time_max', 120))
     start_time_range = request.args.get('start_time_range', '20-24')
@@ -248,7 +256,7 @@ def transfer_search():
                     break
             transfer_idx += 1
     res['1-transfer'] = transfer
-    return jsonify(res)
+    return res
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
